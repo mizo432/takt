@@ -27,40 +27,42 @@
   </a>
 </p>
 
-**AI コーディングエージェントの見張り番をやめる。**
+**AIコーディングエージェントの監視から解放されましょう。**
 
-TAKT は AI コーディングエージェントを再現可能な開発ワークフローとして動かす OSS CLI です。計画、実装、レビュー、修正ループ、人間への確認、権限、出力契約を YAML で定義し、隔離された worktree と追跡可能なログ付きでタスクを実行します。
+TAKTは、AIコーディングエージェントを再利用可能な開発ワークフローに変えるオープンソースのCLIツールです。
 
-1つのエージェントにプロセス全体を覚えさせるのではなく、TAKT は step ごとに役割、文脈、遷移ルールを与えます。AI はコードを書きますが、次に何をするかは workflow が決めます。
+計画、実装、レビュー、修正ループをYAMLで定義します。各ステップは分離された環境で実行され、ログを追跡できます。
+
+1つのエージェントに全体を記憶させる代わりに、TAKTは各ステップに独自の役割とルールを提供します。エージェントはコードを書き、ワークフローが次に何をするかを決定します。
 
 ![AI コーディングエージェントのワークフローを制御する TAKT](./assets/description/01-hero.png)
 
-- 計画 → 実装 → レビュー → 修正ループを明示的な workflow step として実行
-- step ごとに persona、policy、knowledge、instruction、output contract を分け、コンテキストを肥大化させない
-- 積んだタスクを隔離された worktree で実行し、後からログとレポートを確認できる
-- Claude Code、Claude SDK、Codex SDK、OpenCode SDK、Pi SDK、公式 DeepSeek Harness SDK、Cursor、GitHub Copilot CLI、Kiro を provider として利用できる
+- 計画 → 実装 → レビュー → 修正ループをワークフローステップとして実行
+- 各ステップに独自の役割とルールを設定
+- タスクを分離された環境で実行し、ログを追跡
+- Claude Code、Codex、Cursor、GitHub Copilot CLIなどのAIエージェントをサポート
 
-**T**AKT **A**gent **K**oordination **T**opology は複数の AI エージェントをレビューループ、プロンプト管理、step ごとの権限でオーケストレーションするツールです。
+**T**AKT **A**gent **K**oordination **T**opologyは、複数のAIエージェントを調整します。
 
-AI と会話してやりたいことを決め、タスクとして積み、`takt run` で実行します。計画・実装・レビュー・修正のループは YAML の workflow ファイルで定義されており、エージェント任せにはしません。TAKT は Claude Code、Codex、OpenCode、Pi、公式 DeepSeek Harness SDK、Cursor、GitHub Copilot CLI、Kiro CLI を役割・権限・文脈の異なるエージェントとして協調させます。
+AIに会話してタスクを定義し、`takt run`で実行します。計画、実装、レビューはYAMLで定義されるため、プロセスはエージェントの裁量に委ねられません。
 
-TAKT は AI コーディングワークフローを主な用途として提供していますが、コーディング以外でも複数の AI エージェントを協調させたいタスクや、レビュー・判定・フィードバックループによってタスクの精度を高めたい場面で活用できます。
+TAKTは主にAIコーディングのために作られていますが、複数のAIエージェントが協調する任意のタスクに適用できます。
 
-TAKT は TAKT 自身で開発しています（ドッグフーディング）。
+TAKT自身もTAKTを使って構築されています（dogfooding）。
 
 ## なぜ TAKT か
 
-AI コーディングエージェントはそのままでは安定した開発プロセスにはなりません。長い作業では指示を忘れ、コンテキストが汚染され、実装とレビューの責務が混ざり、同じ指摘を人間が何度も繰り返すことにもなります。
+AIコーディングエージェントは自動的に安定した開発プロセスを作成しません。長期間の作業では、指示を忘れたり、コンテキストが混乱したり、実装とレビューの責任が曖昧になったりすることがあります。
 
-プロンプトや `CLAUDE.md` やスキルにルールを書き足すことは助けになります。しかし、それだけではプロセスを強制できません。AI が守るかどうかを AI 自身の振る舞いに委ねることになるからです。
+プロンプトにルールを追加するだけでは、プロセスを強制することはできません。ルールが守られるかどうかはエージェントの振る舞いに委ねられています。
 
-TAKT は AI エージェントをただ信頼するのではなく、外側から制御する対象として扱います。
+TAKTはAIエージェントを外部から制御します。
 
-workflow で工程を定義し、persona・policy・knowledge・instruction・output contract を step ごとに与え、実装、レビュー、修正、再レビューの流れを宣言的に管理します。責務・知識・制約を分け、必要な step の必要なエージェントにだけ渡すことで、コンテキストを肥大化させずにタスクの精度を高めます。
+ワークフローはフェーズを定義し、各ステップは独自の役割とルールを受け取ります。責任を分離し、各エージェントに必要な情報だけを提供することで、タスクの品質を向上させます。
 
-レビューを飛ばせない構造にし、問題があれば修正へ戻し、必要なら人間に判断を戻します。タスクはワークツリーで隔離され、各 step の結果はログとレポートに残るため、タスクから PR までの流れを後から追跡できます。
+レビューはスキップできません。問題は修正ステップに戻され、必要に応じて人間の判断を要求できます。各ステップはログを残すため、タスクからPRへの過程を追跡できます。
 
-TAKT はこれらを役割、工程、判定、フィードバックループからなる再利用可能なエージェントプロセスとして動かします。人間の継続的な介入に依存せず、開発プロセスをレビュー可能で再現可能な仕組みに保ちます。
+開発プロセスは人間の継続的な介入なしに、レビュー可能で再現可能です。
 
 ## 5分で試す
 
@@ -110,39 +112,25 @@ GitHub PR に対して `takt caccia <PR番号>` を実行すると、CodeRabbit 
 
 ## 必要なもの
 
-TAKT の実行には Node.js `>=22.22.0` と Git `>=2.38` が必要です（ゴールの完成判定が `git merge-tree --write-tree` で tree を比べます）。
+TAKTにはNode.js `>=22.22.0`とGit `>=2.38`が必要です。
 
-利用するプロバイダーに応じて、外部 CLI のインストール要否が変わります。
+デフォルトプロバイダーは`claude-sdk`（Claude Agent SDK）です。
 
-デフォルトは Claude Agent SDK を使う `claude-sdk` です。`claude` も `claude-sdk` のエイリアスとして動きます。
+**SDKベースのプロバイダー**（CLI不要、Node.jsのみ）：
+- `claude-sdk`、`codex`、`pi`、`deepseek-harness`
+- 使用前に`takt install <provider>`を実行してください
 
-従来の Claude Code CLI を使う場合は provider に `claude-headless` を指定します。権限プロファイルは選択した provider 名へ移してください。既定の provider は `claude-sdk` に変わったため、旧 `provider_profiles.claude` の権限設定が適用されない場合があります。旧 `claude` 名の session は新しく開始されます。移行の詳細は[権限の解決順序](./configuration.ja.md#パーミッション解決の優先順位)を参照してください。
-
-次のプロバイダーを使う場合は CLI 不要です（SDK 経由、Node.js のみで動作）。SDK は TAKT に同梱していないため、使う前に一度 `takt install <provider>` を実行し、TAKT を更新したら `takt update` を実行してください。端末では、SDK が無いとインストールするかを確認します。CI など対話できない実行では、事前にインストールしてください。詳しくは[管理SDKの導入と更新](./cli-reference.ja.md#管理sdkの導入と更新)を参照してください。
-
-- `claude-sdk` — `@anthropic-ai/claude-agent-sdk`
-- `codex` — `@openai/codex-sdk`
-- `pi` — `@earendil-works/pi-coding-agent`
-
-`deepseek-harness` は公式 TypeScript SDK と対応する runtime を使います。利用前に `takt install deepseek-harness` を実行してください。対応環境は glibc `>= 2.28` の Linux x64/arm64 と macOS arm64 `>= 14.0` です。runtime 終了後は session 履歴を復元できないため、新しい TAKT session/run を開始します。認証、利用できる tool、権限、旧環境からの移行と復旧手順は[設定ガイド](./configuration.ja.md#deepseek-harness-deepseek-harness)を参照してください。
-
-次のプロバイダーを使う場合は外部 CLI のインストールが必要です:
-
-- `opencode` — [OpenCode](https://opencode.ai/) CLI。SDK 用に `takt install opencode` も必要です。既定は v2、v1 は明示選択（[移行設定](./configuration.ja.md#opencode-v1v2-の選択)）。
+**CLIベースのプロバイダー**（外部CLIが必要）：
 - `claude-headless` — [Claude Code](https://claude.ai/code)
-- `claude-terminal` — [Claude Code](https://claude.ai/code) を対話型ターミナルセッションで駆動（[`tmux`](https://github.com/tmux/tmux) も必要）
 - `copilot` — [GitHub Copilot CLI](https://docs.github.com/en/copilot/github-copilot-in-the-cli)
 - `cursor` — [Cursor Agent](https://docs.cursor.com/)
-- `kiro` — [Kiro CLI](https://kiro.dev/docs/cli/headless/)
-- `devin` — [Devin CLI](https://devin.ai/)
+- その他：`opencode`、`kiro`、`devin`など
 
-任意:
+**オプション**：
+- [GitHub CLI](https://cli.github.com/) (`gh`) — GitHub Issueタスク用
+- [GitLab CLI](https://gitlab.com/gitlab-org/cli) (`glab`) — GitLab統合用
 
-- [GitHub CLI](https://cli.github.com/) (`gh`) — `takt #N` で GitHub Issue を使う場合に必要です
-- [GitLab CLI](https://gitlab.com/gitlab-org/cli) (`glab`) — GitLab Issue/MR 連携に使います（リモート URL から自動検出）
-- Java 17 以上（`java` コマンドが `PATH` にあること） — 形式仕様モードの `/verify` で `quint verify` と Alloy Analyzer によるモデル検査を実行する場合に必要です。Quint 自体は TAKT に同梱されているため、別途インストールは不要です。初回実行時に自動でダウンロードされるものについては [形式仕様の検証](./formal-verification.ja.md) を参照してください
-
-> **OAuth の利用について:** OAuth が利用可能かどうかはプロバイダーや用途によって異なります。TAKT を利用する際には各プロバイダーの利用規約をご確認ください。
+> **OAuthの使用：** プロバイダーの利用規約を確認してください。
 
 ## クイックスタート
 
@@ -193,23 +181,17 @@ Select workflow:
 
 「タスクにつむ」を選ぶと `.takt/tasks/` にタスクが保存されます。`takt run` で実行すると、隔離されたワークツリー上でワークフロー（計画 → 実装 → レビュー → 修正ループ）が走り、終わったら PR を作成するか聞いてきます。
 
-「Issueを建てる」を選ぶと、作成前に「タスクにつみますか？ [Y/n]」と確認されます。Y または Enter で Issue を作成し、既存のタスク保存と worktree 設定へ進みます。n では Issue だけを作成します。Esc では何も作らず同じメニューへ戻ります。`--pr` のセッションには Issue の項目は表示されません。
-
-通常の assistant 会話では `/issue 123` または `/issue 12 34` で参照する Issue を置き換え、同じ会話を続けられます。次の発言と `/go` には取得した Issue の内容が使われます。
+「Issueを作成」を選択すると、Issueが作成されます。オプションでタスクとしても保存できます。
 
 ```bash
-# 積んだタスクを実行
+# キューされたタスクを実行
 takt run
 
-# GitHub Issue からも積めます
+# GitHub Issuesからキューすることもできます
 takt add '#6'
-takt add '#12'
-
-# まとめて実行
-takt run
 ```
 
-> **「その場で実行する」を選んだ場合:** ワークフローが終わるまでこの TUI は使えなくなることと、通常はタスクにつんで `takt run` で実行することを案内します。確認の既定値は N（`[y/N]`）です。y でのみ既存の実行処理へ進み、ワークツリーを作らずカレントディレクトリで作業します。N・Enter・Esc では実行せず、選択位置を保持してメニューへ戻ります。メニューで Esc を押すと会話入力へ戻ります。
+> **「ここで今すぐ実行」**は現在のディレクトリで直接実行します。通常のフローはタスクを保存して`takt run`を使用することです。
 
 ### 結果を管理する
 
@@ -218,7 +200,7 @@ takt run
 takt list
 ```
 
-**Stop** は実行中のタスク1件に停止を依頼し、worker が自分で中断して終端状態を決めます。**Mark as failed** は状態を付け直すだけで、worker を停止しません。
+**停止**は実行中のタスクを停止します。**失敗としてマーク**はステータスのみを変更します。
 
 ## 仕組み
 
@@ -293,7 +275,7 @@ workflow ファイルの正式ディレクトリ名は `workflows/` です。
 | `takt run` | 積まれたタスクをまとめて実行します |
 | `takt watch` | タスクキューを監視し、pending タスクを自動実行します（常駐プロセス） |
 | `takt ui` | 実験的な Viewer 中心の Web UI を `http://127.0.0.1:20525` で起動します |
-| `takt manager` | daemon に接続する実験的なゴール相談 TUI を起動します。`Ctrl+R` で問い合わせ、`Ctrl+G` で進行中のゴールを開きます。この2つのキーは manager の処理中も使えます。入力欄に `/make-goal` と打って `Enter` を押すと、現在の会話からゴールの登録案を作ります。案が表示済みでも作り直すだけで、登録はしません。`↑` 承認 / `↓` 続行 / `Enter` 決定で操作し、承認を選んで `Enter` で登録します。`/` を打つと `/make-goal` が補完候補に出て、`Tab` で確定できます。それ以外の `/` で始まる入力は普通の発言として送ります。材料不足なら会話を続けられます。担当の追加・削除・名前変更は会話で依頼します。動作・設定・保存するデータの形式は予告なく変わることがあります。自動でタスクを投入・実行するため、provider の API の費用がかかります。claude（claude-sdk）または codex では、道具の実行前に AI が審査します。起動時に必要なら daemon を起動し、準備が整うまで待ちます。daemon が受付・保存・配送・見張りを行い、会話のターンは会話ごとの子プロセスで動かします。`takt daemon stop` で daemon を停止できます |
+| `takt manager` | 実験的なゴール会話TUIを開く。自動的にタスクをキューして実行します（APIコストが発生）。詳細は[CLIリファレンス](./cli-reference.ja.md)を参照 |
 | `takt director` | 全 manager を見渡す実験的な会話 TUI を開きます。[director](#director実験的)を参照してください |
 | `takt list` | タスクブランチを管理します（マージ、リトライ、リキュー、停止依頼、強制失敗、追加指示、削除） |
 | `takt #N` | GitHub Issue を初期入力としてタスク化します |
@@ -306,94 +288,41 @@ workflow ファイルの正式ディレクトリ名は `workflows/` です。
 | `takt workflow inspect` | workflow の設定と解決ソースを検査します |
 | `takt repertoire add` | GitHub から repertoire パッケージをインストールします |
 
-manager との会話は daemon で実行され、TUI は要求を送り、結果を表示します。受け付けたターンは、TUI を閉じても daemon で処理が続きます。同じリポジトリや workspace を担当先として開き直すと、同じ会話に戻ります。同じ担当先で2つ目の TUI を開いても同じ会話につながり、承認待ちの登録案があれば再表示され、承認を選んで `Enter` を押すと登録できます。
+マネージャー会話はデーモンで実行され、TUIを閉じても続行されます。詳細は[CLIリファレンス](./cli-reference.ja.md)を参照してください。
 
-開き直した画面には、前の画面の発言や返事は再表示されません。会話履歴は provider のセッションに任せます。TAKT は発言本文と結果全文を `daemon-events` に保存し、完了後も保持します。自動削除は行いません。承認待ちのゴール要約やゴールの記録は別に保存します。
+**Slack会話：** 構成されたSlackチャンネルからマネージャー会話に参加できます。詳細は[構成ガイド](./configuration.ja.md#slack-conversations-with-manager)を参照してください。
 
-daemon はイベントで動きます。キューは人の入力と、それ以外のイベントの2本です。次のターンでは人の入力を先に処理し、各キューでは受け付けた順を守ります。会話は1本で、イベントで知った内容も次の人との会話に引き継ぎます。処理中でも発言・承認・問い合わせ回答を保存して受け付け、画面の読み出しと現在のターンの中断を行えます。accepted は永続化済みの受付で、処理の完了ではありません。中断しても待機中の入力は消えません。失敗した処理は、人が明示的に頼んだときだけやり直します。
+すべてのコマンドとオプションについては[CLIリファレンス](./cli-reference.ja.md)を参照してください。
 
-TUI が接続している間や、受け付けた会話の操作を実行している間は、daemon は自動終了しません。明示的に止めるには `takt daemon stop` を使います。
 
-**Slack での会話:** 設定した Slack チャンネルからも、同じ manager の会話につながります。返事は発言したスレッドにだけ届き、TUI の返事は Slack に転送しません。Socket Mode の App マニフェスト、トークン用環境変数、リポジトリ設定、問い合わせへの回答方法は、[Slack で manager と会話する](./configuration.ja.md#slack-で-manager-と会話する)を参照してください。完成などの通知は、別の経路である `TAKT_NOTIFY_WEBHOOK` の Incoming Webhook を引き続き使います。
+### マネージャーツール権限
 
-会話スレッドに `/make-goal` を送ると登録案が表示されます。「登録を承認」または「会話を続ける」で操作でき、古い版のボタンは使えません。
-
-全コマンド・オプションは [CLI Reference](./cli-reference.ja.md) を参照してください。
-
-`takt list --non-interactive --action delete` の `--status <status...>` には、`pending`、`completed`、`failed`、`exceeded`、`pr_failed` を複数指定できます。実行中のタスクは削除できないため、`running` は指定できません。`--goal <goalId>` は指定ゴールに属するタスクに絞ります。既存の `--branch <branch>` も使用でき、単独指定では `completed` のタスクだけが対象です。
-
-`--status`、`--goal`、`--branch` のいずれか1つ以上が必須です。無指定では何も削除せず、エラーで終了します。`--yes` を省略すると対象のタスク名・状態・ブランチ・ゴールの一覧を表示し、削除せず正常終了します。削除は `--yes` を指定した場合だけ行います。`--format json` を併せると対象一覧を JSON で取得でき、JSON 出力には `goal_id` が含まれます。
-
-削除する範囲は対話の一覧からの削除と同じで、タスクの作業場所の clone、worktree セッションのファイル、clone のメタ情報、ブランチ、`.takt/tasks.yaml` の記録です。
-
-```bash
-# 対象一覧を確認してから削除します
-takt list --non-interactive --action delete --status failed pr_failed
-takt list --non-interactive --action delete --status failed pr_failed --yes
-
-# 対象一覧を JSON で確認します
-takt list --non-interactive --action delete --status failed pr_failed --format json
-```
-
-クライアント連携用のエントリポイントも 2 つ同梱しています。`takt-acp` は TAKT を stdio JSON-RPC 上の [Agent Client Protocol](./cli-reference.ja.md#acp-agent) エージェントとして起動し、`takt-mcp` は stdio の [MCP サーバー](./cli-reference.ja.md#mcp-server) として起動して、MCP クライアント（Codex、Claude Code など）からタスクを積み、task/run 状態を確認し、実行中 worktree clone へ追加指示を送れます。pending タスクの実行には `takt run` または `takt watch` を使用します。
-
-`takt_cleanup_tasks` は絞り込んだタスクの一覧を確認してから削除するツールです。絶対パスの `cwd` と `reason` が必須です。任意入力は `statuses`（`pending`、`completed`、`failed`、`exceeded`、`pr_failed` を複数指定でき、`running` は指定できません）、`goalId`、`branch`、`confirm`（既定値は `false`）です。`statuses`、`goalId`、`branch` のいずれか1つ以上が必要です。
-
-`confirm` の省略時または `false` の場合は対象一覧だけを返し、何も削除しません。`confirm: true` の場合だけ、`takt list` と同じ範囲を削除します。このツールは `all` のツール一覧だけで利用でき、`read-only` と `manager` には含まれません。`manager` には別のツール `takt_remove_goal_task` があります。
-
-`takt_stop_goal_task` は `manager` と `all` のツール一覧で利用できます。絶対パスの `cwd` を渡します。`takt_list_tasks` が返す同じタスク項目の `name` の値を `taskName` に設定し、`goalId`・`executionId` もその項目の値を使います。所有PIDの生存を確認します。開始時刻が保存されている場合は、現在の開始時刻を取得して一致を確認します。保存済み開始時刻がない場合は、goalId・taskName・executionIdの一致、実行中の状態、所有PIDの生存を確認して受理します。識別情報の不一致、実行中でないタスク、所有プロセスの終了は、停止依頼を保存せず理由付きで拒否します。開始時刻が保存されているのに現在値を取得できない場合も拒否します。ツールは依頼だけを保存し、workerが500ms間隔で検知して自身を中断する間は `running` を維持します。処理と後片付けの終了後に `failed` とタスク停止理由を保存するため、ゴール中止とは区別できます。他のタスクとゴールは継続します。重複依頼の評価時点で、同じ実行が引き続き `running` で、所有者を検証できる場合に限り保存済みの依頼を返し、再実行には新しい実行IDを使います。
-
-daemon は各プロジェクトのイベント処理前に、中断タスクを `failed` に回復し、ゴールタスクの完了イベントを作成します。pendingタスクがなくても回復します。回復対象は、所有PIDがない場合、生存していない場合、または保存済み開始時刻と現在の開始時刻の既知の不一致がある場合です。生存するPIDの保存済みまたは現在の開始時刻が不明なだけでは、回復せず `running` を維持します。
-
-通常の `takt` assistant 会話でも、MCP 対応 provider なら同じ task 状態を読み取り専用で確認できます。新しいタスクは `/go`、実行中 worktree clone への追加指示は `/tell` で対象を選び、確認してから送ります。失敗したタスクは `/requeue` または `/retry` で、確認のうえキューに戻せます。
-
-### manager の道具の実行前審査
-
-グローバルの `~/.takt/config.yaml` またはプロジェクトの `.takt/config.yaml` で、秘密として扱うファイルやディレクトリを追加できます。
+マネージャーのツール使用はAI権限審判によってレビューされます。機密パスは`~/.takt/config.yaml`または`.takt/config.yaml`で設定できます：
 
 ```yaml
 manager:
   sensitive_paths: [private, config/credentials.json]
 ```
 
-どちらの一覧も既定に追加され、片方が空でも既定は変わりません。各項目にはファイル名またはディレクトリ名を指定します。詳しくは [manager の秘密ファイル設定](./configuration.ja.md#manager-の秘密ファイル設定)を参照してください。
+詳細は[構成ガイド](./configuration.ja.md#manager-sensitive-read-targets)を参照してください。
 
-`takt manager` の provider が claude（claude-sdk）または codex の会話では、人が操作のたびに承認する代わりに、AI の判断役が道具の実行前に審査します。判断は許可、理由付きの拒否、人への確認のいずれかです。既定で有効になり、入切の設定はありません。
+### インスタントexecモード
 
-claude（claude-sdk）の `Read` は、解決後の対象が manager の担当リポジトリ内にある、秘密ではない読み取り可能な通常のファイルの場合に限り、審査を通らずに実行できます。`Glob` はディレクトリを検索ルートとし、探索対象のファイルと、走査するディレクトリ・シンボリックリンクが担当内にあり、秘密対象を含まず安全に探索できると確認できた場合に審査を通らずに実行できます。`Grep` は `Read` と同じ条件の通常ファイルへの検索と、`Glob` と同じ安全性を確認できたディレクトリ検索で審査を通らずに実行できます。担当範囲は workspace の所属リポジトリで、workspace がなければ現在のリポジトリです。相対パスは道具の実際の作業ディレクトリを基準にし、`~`、`..`、シンボリックリンクは比較前に解決します。担当外の対象、秘密ファイル、対象や探索範囲を確定できない操作は判断役へ渡します。既定の秘密ファイルは `.env`、`.env.*`、SSH の秘密鍵の名前（`id_rsa`、`id_dsa`、`id_ecdsa`、`id_ed25519`）、および `*.key`、`*.pem`、`*.crt`、`*.cer`、`*.p12`、`*.pfx` です。グローバルとプロジェクトの `manager.sensitive_paths` はこれらの既定に追加するだけで、既定を削除できません。`ToolSearch` と manager 自身の TAKT MCP の道具は、引き続き審査を通らずに実行できます。Codex では、manager 自身の TAKT MCP の道具だけが審査を通らずに実行でき、組み込みの道具はすべて審査します。どちらの provider でも、それ以外は未知の道具や外部 MCP の道具も含め、保存済み承認が適用されない操作を審査します。`Bash` などのシェルの実行も、保存済み承認が適用されなければ、内容が読み取りだけに見える場合も毎回審査します。`Task` や `Agent` による別のエージェントの起動は常に拒否し、`Bash` から別の AI コマンドラインエージェントを起動する指示も拒否します。Codex の `spawn_agent` も、判断役を通さず常に拒否します。
+`takt exec`は対話型タスク入力モードを開始します。アシスタントエージェントがリクエストを明確化し、`/go`でワークフローを生成して実行します。
 
-拒否理由は manager に返り、manager は次の発言でその理由を踏まえて動きます。人への確認と判定した場合も操作はいったん拒否し、人の確認待ちであることと理由を TUI と Slack に通知します。操作を保持したまま確認を待つことはありません。通知には既存の種類を使い、新しい種類は追加しません。
+詳細は[CLIリファレンス](./cli-reference.ja.md#instant-exec-mode)を参照してください。
 
-判断役の provider と model は、`runtime.yaml` の `provider.targets.internal_agents.manager-permission-judge` で指定できます。他の内部 agent の seat と同じく `profile` または `ladder` を指定でき、`pool` は指定できません。未指定なら manager と同じ provider・model・provider options を使います。
+## Director（実験的）
 
-判断には30秒の期限があります。期限切れは人への確認と同じ扱いになり、承認問い合わせを保存し、操作を確認待ちとして止めて通知します。例外や判定形式の不一致は引き続き操作の拒否になります。判断を自動でやり直すことはありません。
-
-### インスタント exec モード
-
-`takt exec` は TAKT の対話型タスク入力モードを開始します。Assistant エージェントがリクエストを明確化し、`/go` で会話をワークフローに変換、Worker エージェントがタスクを実装、Review エージェントがレビュー、Replanning エージェントが必要に応じてユーザーに方針確認を行い、ループ検出が非生産的な繰り返しを防止します。
-
-exec は前回の設定から開始するか、初回実行時はデフォルト設定を使用します。プリセット名を渡すとそのプリセットから開始します。会話中に `/setup` でエージェント、ループ検出閾値、プリセット、参照ファセットを編集できます。`/go` を実行すると、TAKT は `.takt/exec/workflow.yaml` を生成し、通常のワークフローエンジンで実行します。`/cancel` で実行せずに終了します。入力行の編集中は画像添付（`/paste-image`、`Ctrl+V`、OSC 1337 インライン画像ペースト）が使えます。
-
-プリセットの解決順序、`/setup` の保存先、画像の制限、`session_key` の挙動は [CLI Reference](./cli-reference.ja.md) の Instant Exec モードを参照してください。
-
-## director（実験的）
-
-対話端末で director と会話する TUI を開きます。
+対話型ターミナルでdirector会話TUIを開きます：
 
 ```bash
 takt director
-takt director --help
 ```
 
-会話は daemon が保持するため、TUI を閉じて開き直すと続きにつながります。別の担当リポジトリから起動しても同じ会話です。前の画面の発言や返事は再表示されません。director は実験的機能で、動作や保存するデータの形式は予告なく変わることがあります。人の発言とイベントによるターンは provider を呼び出すため費用がかかります。時計だけのモデル呼び出しは行いません。
+Directorは全マネージャーのゴールを確認し、注意が必要な場合に人間に通知します。実験的機能で、振る舞いは予告なく変更される場合があります。
 
-manager は担当するリポジトリまたは workspace のゴールを進め、タスクの投入、成果の取り込み、完成の申請を行います。director は全 manager のゴールと未回答の問い合わせを確認し、人に対応が必要な事項を知らせ、manager の会話を通じて連絡します。判断は人に残し、マージも人の明示指示を担当 manager に転送するだけで、director 自身は実行しません。
-
-`takt_tell_manager` の伝言は、manager が処理中でも保存されます。保存した時点で操作 ID と manager が返り、返事を待たずに保存順に処理されます。返事・失敗・中断は保存され、あとで同じ操作 ID 付きで director の画面に知らされます。manager 一覧は、読めない project を理由付きで示し、読める manager の処理を続けます。
-
-グローバルの `~/.takt/config.yaml` に `director.slack.channel_id` と `director.slack.allowed_user_ids` を設定します。詳しくは[グローバル設定フィールドリファレンス](./configuration.ja.md#グローバル設定フィールドリファレンス)を参照してください。
-
-**director の Slack:** manager と同じ Slack App と `TAKT_SLACK_APP_TOKEN` / `TAKT_SLACK_BOT_TOKEN` を使い、ボットを director のチャンネルへ招待します。Slack 設定を変更したら daemon を起動し直してください。`director.slack` を設定すると、まとめた通知が届き、許可された人が会話できます。返事は元のスレッドに届きます。接続手順は[Slack で director と会話する](./configuration.ja.md#slack-で-director-と会話する)、詳しい役割と制限は[director の役割](./goal-management.ja.md#director-の役割)を参照してください。
+詳細は[構成ガイド](./configuration.ja.md#slack-conversations-with-director)を参照してください。
 
 ## 設定
 
