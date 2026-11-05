@@ -81,6 +81,7 @@ export async function promptProviderSelection(): Promise<InitialSetupProvider> {
     { label: 'Pi SDK', value: 'pi' },
     { label: 'DeepSeek Harness (official TypeScript SDK)', value: 'deepseek-harness' },
     { label: 'Devin CLI', value: 'devin' },
+    { label: 'Junie lite', value: 'junie-lite' },
   ];
 
   const result = await selectOptionWithDefault(
