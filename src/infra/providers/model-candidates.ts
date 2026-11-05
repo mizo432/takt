@@ -20,6 +20,7 @@ const EXEC_MODEL_CANDIDATES: Partial<Record<ProviderType, readonly string[]>> = 
   pi: [],
   'deepseek-harness': [DEEPSEEK_HARNESS_DEFAULT_MODEL],
   devin: ['swe-2-max', 'swe-2-high', 'swe-2-medium'],
+  'junie-lite': ['mix.lite', 'mix.normal', 'mix.hard', 'mix.frontier'],
   mock: ['mock-model'],
 };
 
