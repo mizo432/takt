@@ -20,6 +20,7 @@ export type ProviderProfileName =
   | 'pi'
   | 'deepseek-harness'
   | 'devin'
+  | 'junie-lite'
   | 'mock';
 
 /** Permission profile for a single provider. */

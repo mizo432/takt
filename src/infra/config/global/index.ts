@@ -21,6 +21,7 @@ export {
   resolveCopilotCliPath,
   resolveKiroCliPath,
   resolveDevinCliPath,
+  resolveJunieCliPath,
   resolveCopilotGithubToken,
   resolveKiroApiKey,
   resolveOpencodeApiKey,

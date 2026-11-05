@@ -51,6 +51,7 @@ export function createMcpAdapter(provider: ProviderType): ProviderMcpAdapter {
     case 'pi':
     case 'deepseek-harness':
     case 'devin':
+    case 'junie-lite':
       return createUnsupportedMcpAdapter(provider);
     default: {
       const exhaustive: never = provider;

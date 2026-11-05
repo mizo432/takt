@@ -16,6 +16,7 @@ describe('supportsManagerPermissionJudge', () => {
     pi: false,
     'deepseek-harness': false,
     devin: false,
+    'junie-lite': false,
     mock: false,
   } satisfies Record<ProviderType, boolean>;
 

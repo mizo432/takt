@@ -15,6 +15,7 @@ const PROVIDER_OPTION_ROOTS: Readonly<Record<ProviderType, readonly (keyof StepP
   pi: ['pi'],
   'deepseek-harness': ['deepseekHarness'],
   devin: ['devin'],
+  'junie-lite': [],
   mock: [],
 };
 

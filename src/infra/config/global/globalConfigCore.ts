@@ -176,6 +176,7 @@ export class GlobalConfigManager {
       copilotCliPath: expandOptionalHomePath(parsed.copilot_cli_path),
       kiroCliPath: expandOptionalHomePath(parsed.kiro_cli_path),
       devinCliPath: expandOptionalHomePath(parsed.devin_cli_path),
+      junieCliPath: expandOptionalHomePath(parsed.junie_cli_path),
       copilotGithubToken: parsed.copilot_github_token,
       kiroApiKey: parsed.kiro_api_key,
       opencodeApiKey: parsed.opencode_api_key,

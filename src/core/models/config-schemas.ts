@@ -251,6 +251,7 @@ const GlobalOnlyConfigSchema = z.object({
   copilot_cli_path: z.string().optional(),
   kiro_cli_path: z.string().optional(),
   devin_cli_path: z.string().optional(),
+  junie_cli_path: z.string().optional(),
   copilot_github_token: z.string().optional(),
   kiro_api_key: z.string().optional(),
   opencode_api_key: z.string().optional(),

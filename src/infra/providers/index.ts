@@ -9,6 +9,7 @@ import { KiroProvider } from './kiro.js';
 import { PiProvider } from './pi.js';
 import { DeepSeekHarnessProvider } from './deepseek-harness.js';
 import { DevinProvider } from './devin.js';
+import { JunieLiteProvider } from './junie-lite.js';
 import { MockProvider } from './mock.js';
 import type { Provider, ProviderType } from './types.js';
 
@@ -40,6 +41,7 @@ export class ProviderRegistry {
       pi: new PiProvider(),
       'deepseek-harness': new DeepSeekHarnessProvider(),
       devin: new DevinProvider(),
+      'junie-lite': new JunieLiteProvider(),
       mock: new MockProvider(),
     };
   }

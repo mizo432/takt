@@ -112,6 +112,19 @@ export function resolveDevinCliPath(): string | undefined {
   return validateCliPath(config.devinCliPath, 'devin_cli_path');
 }
 
+export function resolveJunieCliPath(): string | undefined {
+  const envPath = process.env[envVarNameFromPath('junie_cli_path')];
+  if (envPath !== undefined) {
+    return validateCliPath(envPath, 'TAKT_JUNIE_CLI_PATH');
+  }
+
+  const config: GlobalConfig = loadGlobalConfig();
+  if (config.junieCliPath === undefined) {
+    return undefined;
+  }
+  return validateCliPath(config.junieCliPath, 'junie_cli_path');
+}
+
 export function resolveCopilotGithubToken(): string | undefined {
   const envKey = process.env[envVarNameFromPath('copilot_github_token')];
   if (envKey) return envKey;

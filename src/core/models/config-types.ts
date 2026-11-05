@@ -503,6 +503,9 @@ export interface GlobalConfig extends Omit<ProjectConfig, 'submodules' | 'withSu
   /** External Devin CLI path (overridden by TAKT_DEVIN_CLI_PATH env var) */
   devinCliPath?: string;
   /** @globalOnly */
+  /** External Junie CLI path (overridden by TAKT_JUNIE_CLI_PATH env var) */
+  junieCliPath?: string;
+  /** @globalOnly */
   /** Copilot GitHub token (overridden by TAKT_COPILOT_GITHUB_TOKEN env var) */
   copilotGithubToken?: string;
   /** @globalOnly */

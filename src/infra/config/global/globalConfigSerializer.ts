@@ -134,6 +134,9 @@ export function serializeGlobalConfig(config: GlobalConfig): Record<string, unkn
   if (config.devinCliPath) {
     raw.devin_cli_path = config.devinCliPath;
   }
+  if (config.junieCliPath) {
+    raw.junie_cli_path = config.junieCliPath;
+  }
   if (config.copilotGithubToken) {
     raw.copilot_github_token = config.copilotGithubToken;
   }
