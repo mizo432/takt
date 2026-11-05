@@ -1,5 +1,4 @@
 # Dependencies
-node_modules
 node_modules/
 
 # Build output
@@ -9,6 +8,15 @@ dist/
 *.tgz
 /result
 /result-*
+
+# Gradle (for eval fixtures)
+.gradle/
+build/
+!vendor/faceted-prompting/build/
+!vendor/faceted-prompting/build/**
+gradlew
+gradlew.bat
+gradle/wrapper/gradle-wrapper.jar
 
 # IDE
 .idea/
