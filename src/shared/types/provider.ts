@@ -17,6 +17,24 @@ export const PROVIDER_TYPES = [
   'mock',
 ] as const;
 
+/** Human-readable display names for provider selection prompts. */
+export const PROVIDER_LABELS: Record<ProviderType, string> = {
+  'claude': 'Claude (alias)',
+  'claude-sdk': 'Claude Agent SDK',
+  'claude-headless': 'Claude Code (headless CLI)',
+  'claude-terminal': 'Claude Code terminal (experimental)',
+  'codex': 'Codex',
+  'opencode': 'OpenCode',
+  'cursor': 'Cursor Agent',
+  'copilot': 'GitHub Copilot',
+  'kiro': 'Kiro CLI',
+  'pi': 'Pi SDK',
+  'deepseek-harness': 'DeepSeek Harness (official TypeScript SDK)',
+  'devin': 'Devin CLI',
+  'junie-lite': 'Junie lite',
+  'mock': 'Mock',
+};
+
 export type ProviderType = (typeof PROVIDER_TYPES)[number];
 
 export function resolveProviderAlias(provider: string | undefined): string | undefined {

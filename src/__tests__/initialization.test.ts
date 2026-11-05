@@ -70,9 +70,14 @@ describe('initialization', () => {
           expect.objectContaining({ value: 'claude-terminal' }),
           expect.objectContaining({ value: 'kiro' }),
           expect.objectContaining({ value: 'deepseek-harness' }),
+          expect.objectContaining({ value: 'devin' }),
+          expect.objectContaining({ value: 'junie-lite' }),
         ]),
         'claude-sdk',
       );
+      // Verify mock is excluded
+      const options = vi.mocked(selectOptionWithDefault).mock.calls[0]?.[1] as Array<{ value: string }>;
+      expect(options).not.toContainEqual(expect.objectContaining({ value: 'mock' }));
     });
   });
 

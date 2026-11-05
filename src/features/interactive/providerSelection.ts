@@ -1,5 +1,5 @@
 import type { ProviderType } from '../../shared/types/provider.js';
-import { PROVIDER_TYPES } from '../../shared/types/provider.js';
+import { PROVIDER_TYPES, PROVIDER_LABELS } from '../../shared/types/provider.js';
 import { getLabel } from '../../shared/i18n/index.js';
 import { selectOptionWithDefault } from '../../shared/prompt/index.js';
 
@@ -10,7 +10,7 @@ export function selectInteractiveProvider(
 ): Promise<ProviderType | null> {
   return selectOptionWithDefault(
     getLabel('interactive.providerSelection.prompt', lang),
-    PROVIDER_TYPES.map((provider) => ({ label: provider, value: provider })),
+    PROVIDER_TYPES.map((provider) => ({ label: PROVIDER_LABELS[provider], value: provider })),
     currentProvider,
   );
 }

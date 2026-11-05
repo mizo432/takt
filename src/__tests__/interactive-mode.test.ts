@@ -75,7 +75,7 @@ vi.mock('../shared/prompt/confirm.js', () => ({
 import { getProvider } from '../infra/providers/index.js';
 import { selectOptionWithDefault, selectOption } from '../shared/prompt/index.js';
 import { confirm } from '../shared/prompt/confirm.js';
-import { PROVIDER_TYPES } from '../shared/types/provider.js';
+import { PROVIDER_TYPES, PROVIDER_LABELS } from '../shared/types/provider.js';
 
 const mockGetProvider = vi.mocked(getProvider);
 const mockSelectOptionWithDefault = vi.mocked(selectOptionWithDefault);
@@ -244,7 +244,7 @@ describe('selectInteractiveProvider', () => {
     expect(selected).toBe('claude');
     expect(mockSelectOptionWithDefault).toHaveBeenCalledWith(
       expect.any(String),
-      PROVIDER_TYPES.map((provider) => ({ label: provider, value: provider })),
+      PROVIDER_TYPES.map((provider) => ({ label: PROVIDER_LABELS[provider], value: provider })),
       'codex',
     );
   });

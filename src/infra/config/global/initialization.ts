@@ -12,6 +12,7 @@ import type { Language } from '../../../core/models/index.js';
 import { DEFAULT_LANGUAGE } from '../../../shared/constants.js';
 import { promptInput, selectOptionWithDefault } from '../../../shared/prompt/index.js';
 import type { ProviderType } from '../../../shared/types/provider.js';
+import { PROVIDER_TYPES, PROVIDER_LABELS } from '../../../shared/types/provider.js';
 import { validateProviderModelRequirements } from '../../../core/workflow/provider-model-requirements.js';
 import { getExecModelCandidates } from '../../providers/model-candidates.js';
 import {
@@ -69,20 +70,9 @@ export async function promptProviderSelection(): Promise<InitialSetupProvider> {
   const options: {
     label: string;
     value: InitialSetupProvider;
-  }[] = [
-    { label: 'Claude Agent SDK', value: 'claude-sdk' },
-    { label: 'Claude Code (headless CLI)', value: 'claude-headless' },
-    { label: 'Claude Code terminal (experimental)', value: 'claude-terminal' },
-    { label: 'Codex', value: 'codex' },
-    { label: 'OpenCode', value: 'opencode' },
-    { label: 'Cursor Agent', value: 'cursor' },
-    { label: 'GitHub Copilot', value: 'copilot' },
-    { label: 'Kiro CLI', value: 'kiro' },
-    { label: 'Pi SDK', value: 'pi' },
-    { label: 'DeepSeek Harness (official TypeScript SDK)', value: 'deepseek-harness' },
-    { label: 'Devin CLI', value: 'devin' },
-    { label: 'Junie lite', value: 'junie-lite' },
-  ];
+  }[] = PROVIDER_TYPES
+    .filter((type): type is InitialSetupProvider => type !== 'mock')
+    .map((provider) => ({ label: PROVIDER_LABELS[provider], value: provider }));
 
   const result = await selectOptionWithDefault(
     'Select provider / プロバイダーを選択してください:',
